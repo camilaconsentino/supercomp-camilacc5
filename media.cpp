@@ -61,20 +61,38 @@ vector<double> media_movel_por_valor(vector<double> v, size_t K) {
 // =========================================
 // Função para calcular a média móvel (passagem por referência)
 // =========================================
-vector<double> media_movel_por_referencia() {
+vector<double> media_movel_por_referencia(const vector<double>& v, size_t K) {
     // TODO: Igual à versão anterior, mas recebendo os dados por referência constante
+    size_t tamanho = v.size();
+    vector<double> resultado(tamanho - K + 1);
 
-    return {};
+    for (size_t i = 0; i <= tamanho - K; ++i) {
+        double soma = 0.0;
+        for (size_t j = 0; j < K; ++j) {
+            soma += v[i + j];
+        }
+        resultado[i] = soma / K;
+    }
+    return resultado;
 }
+
 
 // =========================================
 // Função para calcular a média móvel (passagem por ponteiro)
 // =========================================
-vector<double> media_movel_por_ponteiro() {
+vector<double> media_movel_por_ponteiro(const double* ptr, size_t tamanho, size_t K) {
     // TODO: Usar aritmética de ponteiros para calcular a média móvel
     // TODO: Retornar um vetor com os resultados
+    vector<double> resultado(tamanho - K + 1);
 
-    return {};
+    for (size_t i = 0; i <= tamanho - K; ++i) {
+        double soma = 0.0;
+        for (size_t j = 0; j < K; ++j) {
+            soma += *(ptr + i + j); // ou ptr[i + j]
+        }
+        resultado[i] = soma / K;
+    }
+    return resultado;
 }
 
 // =========================================
@@ -103,16 +121,16 @@ int main() {
     double tempo_valor = medir_tempo(media_movel_por_valor, leituras, K);
     cout << "→ Tempo: " << tempo_valor << " s" << endl;
 
-    // // Etapa 3: Cálculo por referência
-    // cout << "Média móvel (por referência):" << endl;
-    // double tempo_ref = medir_tempo(media_movel_por_referencia, leituras, K);
-    // cout << "→ Tempo: " << tempo_ref << " s" << endl;
+    // Etapa 3: Cálculo por referência
+    cout << "Média móvel (por referência):" << endl;
+    double tempo_ref = medir_tempo(media_movel_por_referencia, leituras, K);
+    cout << "→ Tempo: " << tempo_ref << " s" << endl;
 
-    // // Etapa 4: Cálculo por ponteiro
-    // cout << "Média móvel (por ponteiro):" << endl;
-    // const double* ptr = leituras.data();
-    // double tempo_ptr = medir_tempo(media_movel_por_ponteiro, ptr, N, K);
-    // cout << "→ Tempo: " << tempo_ptr << " s" << endl;
+    // Etapa 4: Cálculo por ponteiro
+    cout << "Média móvel (por ponteiro):" << endl;
+    const double* ptr = leituras.data();
+    double tempo_ptr = medir_tempo(media_movel_por_ponteiro, ptr, N, K);
+    cout << "→ Tempo: " << tempo_ptr << " s" << endl;
 
     // Etapa 5: Compile com diferentes flags e compare os tempos
     // Exemplo:
